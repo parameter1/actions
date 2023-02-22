@@ -27,7 +27,7 @@ jobs:
             { type: 'section', text: { type: 'mrkdwn', text: 'A deployment for *${{ github.repository }}* has begun.' } },
             { type: 'divider' },
             { type: 'section', fields: [
-                { type: 'mrkdwn', text: '*Version:*\n${{ steps.tag_version.outputs.version }}' },
+                { type: 'mrkdwn', text: '*Version:*\n${{ inputs.version }}' },
                 { type: 'mrkdwn', text: '*Author:*\n${{ github.triggering_actor }}' },
             ]},
             { type: 'divider' },

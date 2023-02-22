@@ -1,0 +1,42 @@
+name: Start deployment
+
+on:
+  workflow_call:
+    inputs:
+      version:
+        type: string
+        required: true
+      slack-channel:
+        type: string
+        default: testing
+
+jobs:
+  start:
+    runs-on: ubuntu-latest
+    steps:
+    - id: send-message
+      uses: archive/github-actions-slack@master
+      with:
+        slack-function: send-message
+        slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+        slack-channel: ${{ inputs.slack-channel }}
+        slack-text: Deployment of ${{ github.repository }} has begun.
+      env:
+        INPUT_SLACK-OPTIONAL-blocks: |
+          [
+            { type: 'section', text: { type: 'mrkdwn', text: 'A deployment for *${{ github.repository }}* has begun.' } },
+            { type: 'divider' },
+            { type: 'section', fields: [
+                { type: 'mrkdwn', text: '*Version:*\n${{ steps.tag_version.outputs.version }}' },
+                { type: 'mrkdwn', text: '*Author:*\n${{ github.triggering_actor }}' },
+            ]},
+            { type: 'divider' },
+            {
+              type: 'section',
+              text: { type: 'mrkdwn', text: '${{ github.workflow}} #${{ github.run_id }}' },
+              accessory: { type: 'button', text: { type: 'plain_text', text: 'View Deployment' }, url: 'https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id}}' },
+            },
+          ]
+    outputs:
+      slack-channel: ${{ fromJson(steps.send-message.outputs.slack-result).response.channel }}
+      slack-thread: ${{ fromJson(steps.send-message.outputs.slack-result).response.message.ts }}

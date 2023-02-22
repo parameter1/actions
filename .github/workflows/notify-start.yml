@@ -8,7 +8,7 @@ on:
         required: true
       slack-channel:
         type: string
-        default: testing
+        default: deployments
 
 jobs:
   start:

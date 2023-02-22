@@ -5,7 +5,7 @@ on:
     inputs:
       slack-channel:
         type: string
-        default: testing
+        default: deployments
       slack-thread:
         type: string
         required: true

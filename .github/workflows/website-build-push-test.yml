@@ -67,6 +67,16 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+          
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install --pure-lockfile
 
       - name: Run integration tests
         run: node ./test/integration.js

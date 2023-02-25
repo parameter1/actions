@@ -3,19 +3,25 @@ name: Website build, integration tests
 on:
   workflow_call:
     inputs:
+      docker_image:
+        type: string
+        required: true
+      site_host:
+        type: string
+        required: true
+      site_id:
+        type: string
+        required: true
+      infra_stack:
+        type: string
+        required: true
       push:
         type: boolean
         default: false
       ecr_registry:
         type: string
         required: true
-      site_account:
-        type: string
-        required: true
-      site_dir:
-        type: string
-        required: true
-      site_version:
+      tenant_key:
         type: string
         required: true
 
@@ -38,13 +44,19 @@ jobs:
           context: .
           push: ${{ inputs.push }}
           build-args: |
-            SITE=${{ inputs.site_dir }}
-          tags: ${{ inputs.ecr_registry }}/base-cms-websites:${{ inputs.site_account }}-${{ inputs.site_dir }}-${{ inputs.site_version }}
+            SITE=${{ inputs.site_host }}
+          tags: ${{ inputs.docker_image }}
 
       - name: Boot docker image
         run: |
           docker run -p 80:80 \
-            --name website-${{ inputs.site_dir }} \
+            --name website-${{ inputs.site_host }} \
+            -e TENANT_KEY=${{ inputs.tenant_key }} \
+            -e SITE_ID=${{ inputs.site_id }} \
+            -e GRAPHQL_URI=https://graphql.${{ inputs.infra_stack }}.base.parameter1.com \
+            -e OEMBED_URI=https://oembed.${{ inputs.infra_stack }}.base.parameter1.com \
+            -e RSS_URI=https://rss.${{ inputs.infra_stack }}.base.parameter1.com \
+            -e SITEMAPS_URI=https://sitemaps.${{ inputs.infra_stack }}.base.parameter1.com \
             -e RECAPTCHA_V3_SITE_KEY=not-set \
             -e RECAPTCHA_V3_SECRET_KEY=not-set \
             -e SENDGRID_API_KEY=not-set \
@@ -52,12 +64,12 @@ jobs:
             -e OMEDA_INPUT_ID=not-set \
             -e AB_PROJECTS_GRAPHQL_URL=https://graphql.ab-projects.parameter1.com \
             -e ZERO_BOUNCE_API_KEY=not-set \
-            ${{ inputs.ecr_registry }}/base-cms-websites:${{ inputs.site_account }}-${{ inputs.site_dir }}-${{ inputs.site_version }} &
+            ${{ inputs.docker_image }} &
 
       - uses: actions/setup-node@v3
         with:
           node-version: 14.21
-
+          
       - uses: actions/cache@v3
         id: yarn-cache
         with:
@@ -73,4 +85,4 @@ jobs:
         timeout-minutes: 1
 
       - name: Stop docker image
-        run: docker stop website-${{ inputs.site_dir }}
+        run: docker stop website-${{ inputs.site_host }}

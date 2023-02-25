@@ -63,6 +63,7 @@ jobs:
             -e OMEDA_APP_ID=not-set \
             -e OMEDA_INPUT_ID=not-set \
             -e AB_PROJECTS_GRAPHQL_URL=https://graphql.ab-projects.parameter1.com \
+            -e ZERO_BOUNCE_API_KEY=not-set \
             ${{ inputs.docker_image }} &
 
       - uses: actions/setup-node@v3

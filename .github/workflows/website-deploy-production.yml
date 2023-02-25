@@ -3,16 +3,22 @@ name: Deploy to production
 on:
   workflow_call:
     inputs:
-      docker_image:
+      ecr_registry:
         type: string
         required: true
-      infra_stack:
+      rancher_label:
         type: string
         required: true
-      rancher_label_key:
+      site_account:
         type: string
         required: true
-      rancher_label_val:
+      site_dir:
+        type: string
+        required: true
+      site_stack:
+        type: string
+        required: true
+      site_version:
         type: string
         required: true
 
@@ -23,9 +29,9 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           npx @parameter1/rancher2cli dl \
-            --wait --namespace ${{ inputs.infra_stack }}-websites \
-            ${{ inputs.rancher_label_key }} ${{ inputs.rancher_label_val }} \
-            ${{ inputs.docker_image }}
+            --wait --namespace ${{ inputs.site_stack }}-websites \
+            basecms-website ${{ inputs.rancher_label }} \
+            ${{ inputs.ecr_registry }}/base-cms-websites:${{ inputs.site_account }}-${{ inputs.site_dir }}-${{ inputs.site_version }}
         env:
           RANCHER_CLUSTERID: ${{ secrets.RANCHER_CLUSTERID_BASECMS }}
           RANCHER_TOKEN: ${{ secrets.RANCHER_TOKEN }}

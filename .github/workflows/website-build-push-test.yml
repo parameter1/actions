@@ -66,6 +66,7 @@ jobs:
             -e AB_PROJECTS_GRAPHQL_URL=https://graphql.ab-projects.parameter1.com \
             -e ZERO_BOUNCE_API_KEY=not-set \
             -e SPEC_GUIDE_DOCS_API_KEY=not-set \
+            -e EQUIPMENT_EXPERTS_GRAPHQL_URI=not-set \
             ${{ inputs.docker_image }} &
 
       - uses: actions/setup-node@v3

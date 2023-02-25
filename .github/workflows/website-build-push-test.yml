@@ -57,6 +57,7 @@ jobs:
             -e OEMBED_URI=https://oembed.${{ inputs.infra_stack }}.base.parameter1.com \
             -e RSS_URI=https://rss.${{ inputs.infra_stack }}.base.parameter1.com \
             -e SITEMAPS_URI=https://sitemaps.${{ inputs.infra_stack }}.base.parameter1.com \
+            -e BASE_BROWSE_GRAPHQL_URI=https://base-browse.${{ inputs.infra_stack }}.base.parameter1.com \
             -e RECAPTCHA_V3_SITE_KEY=not-set \
             -e RECAPTCHA_V3_SECRET_KEY=not-set \
             -e SENDGRID_API_KEY=not-set \
@@ -64,12 +65,13 @@ jobs:
             -e OMEDA_INPUT_ID=not-set \
             -e AB_PROJECTS_GRAPHQL_URL=https://graphql.ab-projects.parameter1.com \
             -e ZERO_BOUNCE_API_KEY=not-set \
+            -e SPEC_GUIDE_DOCS_API_KEY=not-set \
             ${{ inputs.docker_image }} &
 
       - uses: actions/setup-node@v3
         with:
           node-version: 14.21
-          
+
       - uses: actions/cache@v3
         id: yarn-cache
         with:

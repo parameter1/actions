@@ -61,6 +61,7 @@ jobs:
             -e SPEC_GUIDE_DOCS_API_KEY=not-set \
             -e EQUIPMENT_EXPERTS_GRAPHQL_URI=not-set \
             -e GLOBAL_50_250_DOCS_API_KEY=not-set \
+            -e BRAZE_API_KEY=not-set \
             ${{ inputs.docker_image }} &
 
       - uses: actions/setup-node@v3

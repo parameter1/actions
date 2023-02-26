@@ -63,7 +63,7 @@ jobs:
             -e GLOBAL_50_250_DOCS_API_KEY=not-set \
             -e BRAZE_API_KEY=not-set \
             -e AUTH0_BASEURL=not-set \
-            -e AUTH0_SECRET=not-set \
+            -e AUTH0_SECRET=12345678 \
             ${{ inputs.docker_image }} &
 
       - uses: actions/setup-node@v3

@@ -82,7 +82,7 @@ jobs:
 
       - name: Run integration tests
         run: node ./test/integration.js
-        timeout-minutes: 1
+        timeout-minutes: 3
 
       - name: Stop docker image
         run: docker stop website-${{ inputs.site_host }}

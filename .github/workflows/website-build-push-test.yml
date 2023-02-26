@@ -51,13 +51,6 @@ jobs:
         run: |
           docker run -p 80:80 \
             --name website-${{ inputs.site_host }} \
-            -e TENANT_KEY=${{ inputs.tenant_key }} \
-            -e SITE_ID=${{ inputs.site_id }} \
-            -e GRAPHQL_URI=https://graphql.${{ inputs.infra_stack }}.base.parameter1.com \
-            -e OEMBED_URI=https://oembed.${{ inputs.infra_stack }}.base.parameter1.com \
-            -e RSS_URI=https://rss.${{ inputs.infra_stack }}.base.parameter1.com \
-            -e SITEMAPS_URI=https://sitemaps.${{ inputs.infra_stack }}.base.parameter1.com \
-            -e BASE_BROWSE_GRAPHQL_URI=https://base-browse.${{ inputs.infra_stack }}.base.parameter1.com \
             -e RECAPTCHA_V3_SITE_KEY=not-set \
             -e RECAPTCHA_V3_SECRET_KEY=not-set \
             -e SENDGRID_API_KEY=not-set \

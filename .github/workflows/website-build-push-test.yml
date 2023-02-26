@@ -78,7 +78,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: yarn install --pure-lockfile
+        run: yarn install --frozen-lockfile
 
       - name: Run integration tests
         run: node ./test/integration.js

@@ -59,10 +59,10 @@ jobs:
             -e AB_PROJECTS_GRAPHQL_URL=https://graphql.ab-projects.parameter1.com \
             -e ZERO_BOUNCE_API_KEY=not-set \
             -e SPEC_GUIDE_DOCS_API_KEY=not-set \
-            -e EQUIPMENT_EXPERTS_GRAPHQL_URI=not-set \
+            -e EQUIPMENT_EXPERTS_GRAPHQL_URI=https://www.google.com \
             -e GLOBAL_50_250_DOCS_API_KEY=not-set \
-            -e BRAZE_API_KEY=not-set \
-            -e AUTH0_BASEURL=not-set \
+            -e BRAZE_API_KEY=12345678 \
+            -e AUTH0_BASEURL=https://www.google.com \
             -e AUTH0_SECRET=12345678 \
             ${{ inputs.docker_image }} &
 

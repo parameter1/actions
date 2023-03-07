@@ -15,13 +15,19 @@ on:
       rancher_label_val:
         type: string
         required: true
-      cdn_path:
-        type: string
-        required: true
       ecr_registry:
         type: string
         required: true
       site_dir:
+        type: string
+        required: true
+      site_id:
+        type: string
+        required: true
+      tenant:
+        type: string
+        required: true
+      version:
         type: string
         required: true
 
@@ -40,8 +46,8 @@ jobs:
         run: |
           mkdir assets
           container_id=$(docker create "${{ inputs.docker_image }}")
-          docker cp "$container_id:/repo/${{ inputs.site_dir }}/dist" assets/
-          docker cp "$container_id:/repo/${{ inputs.site_dir }}/server/public" assets/
+          docker cp "$container_id:/repo/sites/${{ inputs.site_dir }}/dist" assets/
+          docker cp "$container_id:/repo/sites/${{ inputs.site_dir }}/server/public" assets/
           docker rm "$container_id"
 
       - name: Upload static assets
@@ -52,7 +58,7 @@ jobs:
           AWS_S3_BUCKET: cdn.parameter1.com
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          DEST_DIR: 'web-assets/${{ inputs.cdn_path }}'
+          DEST_DIR: 'web-assets/${{ inputs.tenant }}/${{ inputs.site_id }}/${{ inputs.version }}'
           SOURCE_DIR: 'assets'
 
       - name: Deploy to Kubernetes

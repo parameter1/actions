@@ -27,7 +27,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Log in to ECR
-        if: inputs.push
         uses: docker/login-action@v2
         with:
           registry: ${{ inputs.ecr_registry }}

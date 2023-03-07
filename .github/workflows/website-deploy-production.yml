@@ -21,6 +21,9 @@ on:
       ecr_registry:
         type: string
         required: true
+      site_dir:
+        type: string
+        required: true
 
 jobs:
   deploy:
@@ -37,8 +40,8 @@ jobs:
         run: |
           mkdir assets
           container_id=$(docker create "${{ inputs.docker_image }}")
-          docker cp "$container_id:/repo/dist" assets/
-          docker cp "$container_id:/repo/server/public" assets/
+          docker cp "$container_id:/repo/${{ inputs.site_dir }}/dist" assets/
+          docker cp "$container_id:/repo/${{ inputs.site_dir }}/server/public" assets/
           docker rm "$container_id"
 
       - name: Upload static assets

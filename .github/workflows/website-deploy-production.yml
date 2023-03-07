@@ -15,11 +15,33 @@ on:
       rancher_label_val:
         type: string
         required: true
+      cdn_path:
+        type: string
+        required: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Extract static assets
+        run: |
+          mkdir assets
+          container_id=$(docker create "${{ $inputs.docker_image }}")
+          docker cp "$container_id:/repo/dist" assets/
+          docker cp "$container_id:/repo/server/public" assets/
+          docker rm "$container_id"
+
+      - name: Upload static assets
+        uses: jakejarvis/s3-sync-action@v0.5.1
+        with:
+          args: --cache-control max-age=31536000,public
+        env:
+          AWS_S3_BUCKET: cdn.parameter1.com
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DEST_DIR: 'web-assets/${{ inputs.cdn_path }}'
+          SOURCE_DIR: 'assets'
+
       - name: Deploy to Kubernetes
         run: |
           npx @parameter1/rancher2cli dl \

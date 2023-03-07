@@ -26,7 +26,7 @@ jobs:
       - name: Extract static assets
         run: |
           mkdir assets
-          container_id=$(docker create "${{ $inputs.docker_image }}")
+          container_id=$(docker create "${{ inputs.docker_image }}")
           docker cp "$container_id:/repo/dist" assets/
           docker cp "$container_id:/repo/server/public" assets/
           docker rm "$container_id"

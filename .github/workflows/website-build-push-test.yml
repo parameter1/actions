@@ -9,22 +9,13 @@ on:
       site_host:
         type: string
         required: true
-      site_id:
-        type: string
-        required: true
-      infra_stack:
-        type: string
-        required: true
       push:
         type: boolean
         default: false
       ecr_registry:
         type: string
         required: true
-      tenant_key:
-        type: string
-        required: true
-
+        
 jobs:
   test:
     runs-on: ubuntu-latest

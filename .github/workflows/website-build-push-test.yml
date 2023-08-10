@@ -15,7 +15,7 @@ on:
       ecr_registry:
         type: string
         required: true
-        
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -42,19 +42,26 @@ jobs:
         run: |
           docker run -p 80:80 \
             --name website-${{ inputs.site_host }} \
-            -e RECAPTCHA_V3_SITE_KEY=not-set \
-            -e RECAPTCHA_V3_SECRET_KEY=not-set \
-            -e SENDGRID_API_KEY=not-set \
-            -e OMEDA_APP_ID=not-set \
-            -e OMEDA_INPUT_ID=not-set \
             -e AB_PROJECTS_GRAPHQL_URL=https://graphql.ab-projects.parameter1.com \
-            -e ZERO_BOUNCE_API_KEY=not-set \
-            -e SPEC_GUIDE_DOCS_API_KEY=not-set \
-            -e EQUIPMENT_EXPERTS_GRAPHQL_URI=https://www.google.com \
-            -e GLOBAL_50_250_DOCS_API_KEY=not-set \
-            -e BRAZE_API_KEY=12345678 \
             -e AUTH0_BASEURL=https://www.google.com \
             -e AUTH0_SECRET=12345678 \
+            -e BRAZE_API_KEY=12345678 \
+            -e EQUIPMENT_EXPERTS_GRAPHQL_URI=https://www.google.com \
+            -e GLOBAL_50_250_DOCS_API_KEY=not-set \
+            -e OMEDA_APP_ID=not-set \
+            -e OMEDA_INPUT_ID=not-set \
+            -e PAYFABRIC_DEVICE_ID=not-set \
+            -e PAYFABRIC_DEVICE_PWD=not-set \
+            -e PAYFABRIC_GATEWAY_NAME=not-set \
+            -e RECAPTCHA_V3_SECRET_KEY=not-set \
+            -e RECAPTCHA_V3_SITE_KEY=not-set \
+            -e RIGDIG_PASSWORD=not-set \
+            -e RIGDIG_USERNAME=not-set \
+            -e SENDGRID_API_KEY=not-set \
+            -e SENDGRID_API_KEY=not-set \
+            -e SENDGRID_DEV_TO=not-set \
+            -e SPEC_GUIDE_DOCS_API_KEY=not-set \
+            -e ZERO_BOUNCE_API_KEY=not-set \
             ${{ inputs.docker_image }} &
 
       - uses: actions/setup-node@v3

@@ -58,8 +58,7 @@ jobs:
             -e RIGDIG_PASSWORD=not-set \
             -e RIGDIG_USERNAME=not-set \
             -e SENDGRID_API_KEY=not-set \
-            -e SENDGRID_API_KEY=not-set \
-            -e SENDGRID_DEV_TO=not-set \
+            -e SENDGRID_DEV_TO=no-reply@parameter1.com \
             -e SPEC_GUIDE_DOCS_API_KEY=not-set \
             -e ZERO_BOUNCE_API_KEY=not-set \
             ${{ inputs.docker_image }} &

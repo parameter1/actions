@@ -45,6 +45,7 @@ jobs:
             -e AB_PROJECTS_GRAPHQL_URL=https://graphql.ab-projects.parameter1.com \
             -e AUTH0_BASEURL=https://www.google.com \
             -e AUTH0_SECRET=12345678 \
+            -e AVATAX_HASHED_CREDENTIALS=not-set \
             -e BRAZE_API_KEY=12345678 \
             -e EQUIPMENT_EXPERTS_GRAPHQL_URI=https://www.google.com \
             -e GLOBAL_50_250_DOCS_API_KEY=not-set \

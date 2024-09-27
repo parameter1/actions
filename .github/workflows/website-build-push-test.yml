@@ -54,6 +54,7 @@ jobs:
             -e PAYFABRIC_DEVICE_ID=not-set \
             -e PAYFABRIC_DEVICE_PWD=not-set \
             -e PAYFABRIC_GATEWAY_NAME=not-set \
+            -e POSTUP_API_CREDENTIALS=not-set \
             -e RECAPTCHA_V3_SECRET_KEY=not-set \
             -e RECAPTCHA_V3_SITE_KEY=not-set \
             -e RIGDIG_PASSWORD=not-set \

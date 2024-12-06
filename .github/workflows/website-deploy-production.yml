@@ -68,6 +68,6 @@ jobs:
             ${{ inputs.rancher_label_key }} ${{ inputs.rancher_label_val }} \
             ${{ inputs.docker_image }}
         env:
-          RANCHER_CLUSTERID: ${{ secrets.RANCHER_CLUSTERID_BASECMS }}
+          RANCHER_CLUSTERID: ${{ secrets.RANCHER_CLUSTERID_MINDFUL_WEB }}
           RANCHER_TOKEN: ${{ secrets.RANCHER_TOKEN }}
           RANCHER_URL: ${{ secrets.RANCHER_URL }}

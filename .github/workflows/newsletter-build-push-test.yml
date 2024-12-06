@@ -1,0 +1,56 @@
+name: Newsletter build, test
+
+on:
+  workflow_call:
+    inputs:
+      docker_image:
+        type: string
+        required: true
+      tenant:
+        type: string
+        required: true
+      push:
+        type: boolean
+        default: false
+      ecr_registry:
+        type: string
+        required: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 14.21
+
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: '**/node_modules'
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install dependencies
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+        run: yarn install --frozen-lockfile
+
+      - name: Test code
+        run: yarn test
+
+      - name: Log in to ECR
+        if: inputs.push
+        uses: docker/login-action@v2
+        with:
+          registry: ${{ inputs.ecr_registry }}
+          username: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - uses: docker/build-push-action@v3
+        with:
+          context: .
+          push: ${{ inputs.push }}
+          build-args: |
+            TENANT=${{ inputs.tenant }}
+          tags: ${{ inputs.docker_image }}

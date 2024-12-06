@@ -1,0 +1,32 @@
+name: Deploy to staging
+
+on:
+  workflow_call:
+    inputs:
+      docker_image:
+        type: string
+        required: true
+      infra_stack:
+        type: string
+        required: true
+      rancher_label_key:
+        type: string
+        required: true
+      rancher_label_val:
+        type: string
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to Kubernetes
+        run: |
+          npx @parameter1/rancher2cli dl \
+            --wait --namespace staging-newsletters-${{ inputs.infra_stack }} \
+            ${{ inputs.rancher_label_key }} ${{ inputs.rancher_label_val }} \
+            ${{ inputs.docker_image }}
+        env:
+          RANCHER_CLUSTERID: ${{ secrets.RANCHER_CLUSTERID_MINDFUL_WEB }}
+          RANCHER_TOKEN: ${{ secrets.RANCHER_TOKEN }}
+          RANCHER_URL: ${{ secrets.RANCHER_URL }}

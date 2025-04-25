@@ -9,6 +9,13 @@ on:
       slack-channel:
         type: string
         default: deployments
+    outputs:
+      slack-channel:
+        description: "The Slack channel to send replies to"
+        value: ${{ jobs.start.outputs.slack-channel }}
+      slack-thread:
+        description: "The Slack thread to send replies to"
+        value: ${{ jobs.start.outputs.slack-thread }}
 
 jobs:
   start:

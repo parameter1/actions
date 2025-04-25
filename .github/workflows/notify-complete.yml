@@ -11,7 +11,7 @@ on:
         required: true
 
 jobs:
-  fail:
+  complete:
     runs-on: ubuntu-latest
     steps:
     - uses: archive/github-actions-slack@master

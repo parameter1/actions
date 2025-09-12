@@ -49,6 +49,7 @@ jobs:
             -e BRAZE_API_KEY=12345678 \
             -e EQUIPMENT_EXPERTS_GRAPHQL_URI=https://www.google.com \
             -e GLOBAL_50_250_DOCS_API_KEY=not-set \
+            -e IDENTITYX_GRAPHQL_URI=https://identity-x.parameter1.com/graphql \
             -e OMEDA_APP_ID=not-set \
             -e OMEDA_INPUT_ID=not-set \
             -e PAYFABRIC_DEVICE_ID=not-set \

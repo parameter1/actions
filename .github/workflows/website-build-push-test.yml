@@ -43,6 +43,7 @@ jobs:
           docker run -p 80:80 \
             --name website-${{ inputs.site_host }} \
             -e AB_PROJECTS_GRAPHQL_URL=https://graphql.ab-projects.parameter1.com \
+            -e ACTIVE_CAMPAIGN_API_KEY=not-set \
             -e AUTH0_BASEURL=https://www.google.com \
             -e AUTH0_SECRET=12345678 \
             -e AVATAX_HASHED_CREDENTIALS=not-set \

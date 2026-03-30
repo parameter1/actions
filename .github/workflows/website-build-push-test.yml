@@ -51,6 +51,7 @@ jobs:
             -e EQUIPMENT_EXPERTS_GRAPHQL_URI=https://www.google.com \
             -e GLOBAL_50_250_DOCS_API_KEY=not-set \
             -e IDENTITYX_GRAPHQL_URI=https://apis.mindfulcms.com/graphql/idx-compat \
+            -e MAILCHIMP_ACCESS_TOKEN=not-set \
             -e OMEDA_APP_ID=not-set \
             -e OMEDA_INPUT_ID=not-set \
             -e PAYFABRIC_DEVICE_ID=not-set \

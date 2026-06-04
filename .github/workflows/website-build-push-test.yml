@@ -3,6 +3,9 @@ name: Website build, integration tests
 on:
   workflow_call:
     inputs:
+      debug:
+        type: boolean
+        default: false
       docker_image:
         type: string
         required: true
@@ -85,6 +88,8 @@ jobs:
         run: yarn install --frozen-lockfile
 
       - name: Run integration tests
+        env:
+          DEBUG: ${{ case(inputs.debug, 'marko-web', '') }}
         run: node ./test/integration.js
         timeout-minutes: 3
 

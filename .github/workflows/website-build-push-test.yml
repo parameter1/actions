@@ -55,6 +55,7 @@ jobs:
             -e GLOBAL_50_250_DOCS_API_KEY=not-set \
             -e IDENTITYX_GRAPHQL_URI=https://apis.mindfulcms.com/graphql/idx-compat \
             -e MAILCHIMP_ACCESS_TOKEN=not-set \
+            -e MARKO_WEB_DISABLE_STREAMING=true \
             -e MINDFUL_AD_SERVER_DATA_API_KEY=not-set \
             -e MINDFUL_EMAIL_API_KEY=not-set \
             -e OMEDA_APP_ID=not-set \

@@ -96,3 +96,7 @@ jobs:
 
       - name: Stop docker image
         run: docker stop website-${{ inputs.site_host }}
+
+      - name: Export logs
+        if: failure()
+        run: docker logs -t website-${{ inputs.site_host }}

@@ -33,7 +33,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: { group: Default }
+    runs-on: ubuntu-latest
     steps:
       - name: Log in to ECR
         uses: docker/login-action@v2

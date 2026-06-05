@@ -19,7 +19,7 @@ on:
 
 jobs:
   start:
-    runs-on: { group: Default }
+    runs-on: ubuntu-latest
     steps:
     - id: send-message
       uses: archive/github-actions-slack@master

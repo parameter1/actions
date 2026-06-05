@@ -19,7 +19,7 @@ on:
 
 jobs:
   start:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, linux, x64]
     steps:
     - id: send-message
       uses: archive/github-actions-slack@master

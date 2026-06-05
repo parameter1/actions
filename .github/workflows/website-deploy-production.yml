@@ -33,7 +33,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: { group: Default }
     steps:
       - name: Log in to ECR
         uses: docker/login-action@v2

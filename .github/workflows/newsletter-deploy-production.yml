@@ -18,7 +18,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: [self-hosted, linux, x64]
+    runs-on: { group: Default }
     steps:
       - name: Deploy to Kubernetes
         run: |

@@ -21,7 +21,7 @@ on:
 
 jobs:
   test:
-    runs-on: { group: Default }
+    runs-on: { group: Default, labels: [self-hosted, linux, x64] }
     steps:
       - uses: actions/checkout@v3
 

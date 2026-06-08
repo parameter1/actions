@@ -31,6 +31,9 @@ jobs:
           oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
           oauth-secret:    ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
           tags: tag:ci
+          use-cache: true
+          hostname: gha-${{ github.run_id }}-${{ github.run_attempt }}
+          args: --accept-dns
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
@@ -45,6 +48,9 @@ jobs:
           build-args: |
             SITE=${{ inputs.site_host }}
           tags: ${{ inputs.docker_image }}
+
+      - name: Route egress via DMZ exit node      # <-- BEFORE Boot docker image
+        run: command -v tailscale >/dev/null && sudo tailscale set --exit-node= || true
 
       - name: Boot docker image
         run: |
@@ -97,7 +103,6 @@ jobs:
         env:
           DEBUG: ${{ case(inputs.debug, 'marko-web', '') }}
         run: |
-          sudo tailscale set --exit-node=vpn --exit-node-allow-lan-access=true
           echo "egress IP: $(curl -s https://ifconfig.me)"   # must be the whitelisted DMZ NAT IP
           node ./test/integration.js
         timeout-minutes: 3

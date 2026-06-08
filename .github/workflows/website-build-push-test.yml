@@ -50,7 +50,7 @@ jobs:
           tags: ${{ inputs.docker_image }}
 
       - name: Route egress via DMZ exit node      # <-- BEFORE Boot docker image
-        run: command -v tailscale >/dev/null && sudo tailscale set --exit-node= || true
+        run: command -v tailscale >/dev/null && sudo tailscale set --exit-node=vpn --exit-node-allow-lan-access=true || true
 
       - name: Boot docker image
         run: |

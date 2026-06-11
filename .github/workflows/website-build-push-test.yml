@@ -21,36 +21,29 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # Self-hosted ephemeral runners (the EC2/Lambda fleet). They egress from the
+    # whitelisted DMZ/EIP, so reaching internal services is solved by *where the runner
+    # runs* — no per-run secret needed. Fork PRs work too (GitHub still withholds secrets
+    # from forks, so creds stay protected); a warm pool keeps ~5 hot during business hours.
+    runs-on: [self-hosted, linux, x64]
     steps:
       - uses: actions/checkout@v3
 
-      - name: Connect to Tailscale
-        uses: tailscale/github-action@v4
-        with:
-          oauth-client-id: ${{ secrets.TAILSCALE_OAUTH_CLIENT_ID }}
-          oauth-secret:    ${{ secrets.TAILSCALE_OAUTH_CLIENT_SECRET }}
-          tags: tag:ci
-          use-cache: true
-          hostname: gha-${{ github.run_id }}-${{ github.run_attempt }}
-          args: --accept-dns
-
-      - name: Log in to Docker Hub
+      - name: Log in to ECR
+        if: inputs.push
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          registry: ${{ inputs.ecr_registry }}
+          username: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
       - uses: docker/build-push-action@v3
         with:
           context: .
-          push: false
+          push: ${{ inputs.push }}
           build-args: |
             SITE=${{ inputs.site_host }}
           tags: ${{ inputs.docker_image }}
-
-      - name: Route egress via DMZ exit node      # <-- BEFORE Boot docker image
-        run: command -v tailscale >/dev/null && sudo tailscale set --exit-node=vpn --exit-node-allow-lan-access=true || true
 
       - name: Boot docker image
         run: |
@@ -102,14 +95,8 @@ jobs:
       - name: Run integration tests
         env:
           DEBUG: ${{ case(inputs.debug, 'marko-web', '') }}
-        run: |
-          echo "egress IP: $(curl -s https://ifconfig.me)"   # must be the whitelisted DMZ NAT IP
-          node ./test/integration.js
+        run: node ./test/integration.js
         timeout-minutes: 3
-
-      - name: Disable exit node
-        if: always()
-        run: sudo tailscale set --exit-node=
 
       - name: Stop docker image
         run: docker stop website-${{ inputs.site_host }}
@@ -117,20 +104,3 @@ jobs:
       - name: Export logs
         if: failure()
         run: docker logs -t website-${{ inputs.site_host }}
-
-      - name: Log in to ECR
-        if: inputs.push
-        uses: docker/login-action@v2
-        with:
-          registry: ${{ inputs.ecr_registry }}
-          username: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-      - uses: docker/build-push-action@v3
-        if: inputs.push
-        with:
-          context: .
-          push: true
-          build-args: |
-            SITE=${{ inputs.site_host }}
-          tags: ${{ inputs.docker_image }}
